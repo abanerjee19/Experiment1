@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Draw Circles</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f8fafc;
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+}
+
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    width: 420px;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: #2563eb;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.canvas {
+    border: 2px dashed #e2e8f0;
+    border-radius: 12px;
+    height: 300px;
+    position: relative;
+    cursor: pointer;
+}
+
+.circle {
+    width: 12px;
+    height: 12px;
+    background: #2563eb;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.counter {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #334155;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="top-bar">
+        <div class="checkbox"></div>
+        <button id="undo">Undo</button>
+    </div>
+
+    <div class="canvas" id="canvas"></div>
+
+    <div class="counter">
+        Circles drawn: <span id="count">0</span>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const undoBtn = document.getElementById("undo");
+const countEl = document.getElementById("count");
+
+let circles = [];
+
+canvas.addEventListener("click", (e) => {
+    const rect = canvas.getBoundingClientRect();
+
+    const circle = document.createElement("div");
+    circle.className = "circle";
+    circle.style.left = (e.clientX - rect.left - 6) + "px";
+    circle.style.top = (e.clientY - rect.top - 6) + "px";
+
+    canvas.appendChild(circle);
+    circles.push(circle);
+
+    countEl.textContent = circles.length;
+});
+
+undoBtn.addEventListener("click", () => {
+    if (circles.length === 0) return;
+
+    const last = circles.pop();
+    canvas.removeChild(last);
+
+    countEl.textContent = circles.length;
+});
+</script>
+
+</body>
+</html>
